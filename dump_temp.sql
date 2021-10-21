@@ -21,12 +21,12 @@ CREATE TABLE `TEAM` (
 DROP TABLE IF EXISTS `GAMEWEEK`;
 CREATE TABLE `GAMEWEEK` (
   `Week_number` int(2) DEFAULT 1,
-  `Highest_points` int NOT NULL,
-  `Average_points` int NOT NULL,
-  `Month(2)` int NOT NULL,
-  `Day(2)` int NOT NULL,
-  `Hours(2)` int NOT NULL,
-  `Minutes(2)` int NOT NULL,
+  `Highest_points` int,
+  `Average_points` int,
+  `Month` int NOT NULL,
+  `Day` int NOT NULL,
+  `Hours` int NOT NULL,
+  `Minutes` int NOT NULL,
   PRIMARY KEY (`Week_number`),
   CHECK (`Week_number` <= 38)
 );
@@ -68,10 +68,10 @@ CREATE TABLE `PLAYER` (
   `Name` varchar(100) NOT NULL,
   `Club` varchar(100) NOT NULL,
   `Market_cost` decimal(5,2) NOT NULL,
-  `Form` int NOT NULL,
-  `Total_points` int NOT NULL,
+  `Form` int,
+  `Total_points` int,
   `Selection %` decimal(4,2),
-  `Fitness Status` varchar(100) NOT NULL,
+  `Fitness Status` varchar(100),
   PRIMARY KEY (`Name`)
 );
 
@@ -183,6 +183,7 @@ CREATE TABLE `PLAYS_IN` (
   `Away_club` varchar(100) NOT NULL,
   `Week_number` int NOT NULL,
   `Player_points` int,
+  PRIMARY KEY(`Player_name`, `Home_club`, `Away_club`, `Week_number`),
   FOREIGN KEY (`Player_name`) REFERENCES `PLAYER`(`Name`),
   FOREIGN KEY (`Home_club`, `Away_club`) REFERENCES `FIXTURE1`(`Home_club`, `Away_club`),
   FOREIGN KEY (`Week_number`) REFERENCES `GAMEWEEK`(`Week_number`),
@@ -196,6 +197,8 @@ CREATE TABLE `ADD_POINTS1` (
   `Player_name` varchar(100) NOT NULL,
   `Home_club` varchar(100) NOT NULL,
   `Away_club` varchar(100) NOT NULL,
+  `Player_points` int,
+  PRIMARY KEY(`Team_name`, `Week_number`, `Player_name`, `Home_club`, `Away_club`),
   FOREIGN KEY (`Team_name`) REFERENCES `TEAM`(`Name`),
   FOREIGN KEY (`Week_number`) REFERENCES `GAMEWEEK`(`Week_number`),
   FOREIGN KEY (`Player_name`) REFERENCES `PLAYER`(`Name`),
@@ -219,9 +222,9 @@ DROP TABLE IF EXISTS `ACTIVATES`;
 CREATE TABLE `ACTIVATES` (
   `Team_name` varchar(100) NOT NULL,
   `Week_number` int(2) NOT NULL,
-  `Chip_name` varchar(15) NOT NULL,
+  `Chip_name` varchar(15),
   `Gameweek Points` int,
-  PRIMARY KEY (`Team_name`, `Week_number`, `Chip_name`),
+  PRIMARY KEY (`Team_name`, `Week_number`),
   FOREIGN KEY (`Team_name`) REFERENCES `TEAM` (`Name`),
   FOREIGN KEY (`Week_number`) REFERENCES `GAMEWEEK` (`Week_number`),
   FOREIGN KEY (`Chip_name`) REFERENCES `CHIP` (`Name`)
