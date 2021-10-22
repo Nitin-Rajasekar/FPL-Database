@@ -405,6 +405,10 @@ CREATE TABLE `HAS_ACTIVE` (
 LOCK TABLES `HAS_ACTIVE` WRITE;
 /*!40000 ALTER TABLE `HAS_ACTIVE` DISABLE KEYS */;
 INSERT INTO `HAS_ACTIVE` VALUES ('Team 4','Bench Boost'),('Team 4','Freehit'),('Team 4','Triple Captain'),('Team 4','Wildcard');
+
+INSERT INTO `HAS_ACTIVE` VALUES ('Team Bob','Bench Boost'),('Team 4','Freehit'),('Team 4','Triple Captain'),('Team 4','Wildcard');
+
+
 /*!40000 ALTER TABLE `HAS_ACTIVE` ENABLE KEYS */;
 UNLOCK TABLES;
 
