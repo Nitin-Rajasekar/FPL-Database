@@ -610,7 +610,6 @@ LOCK TABLES `PLAYER` WRITE;
 /*!40000 ALTER TABLE `PLAYER` DISABLE KEYS */;
 INSERT INTO `PLAYER` VALUES ('Ali Dia','Southampton',4.50,NULL,NULL,NULL,NULL),('Benjailmin Mendy','Manchester City',8.20,NULL,NULL,NULL,NULL),('Donny van de Beek','Manchester United',5.00,NULL,NULL,NULL,NULL),('Eric Dier','Tottenham Hotspurs',7.00,NULL,NULL,NULL,NULL),('Erling Braut Haaland','Newcastle United',12.50,NULL,NULL,NULL,NULL),('Fred','Manchester United',8.00,NULL,NULL,NULL,NULL),('Guilty Sigurdsson','Everton',6.90,NULL,NULL,NULL,NULL),('Harry Maguire','Manchester United',7.50,NULL,NULL,NULL,NULL),('Jamie Vardy','Leicester City',11.30,NULL,NULL,NULL,NULL),('Jonjo Shelvey','Newcastle United',6.00,NULL,NULL,NULL,NULL),('Kepa Arrizabalaga','Chelsea',6.50,NULL,NULL,NULL,NULL),('Kylian Mbappe','Newcastle United',14.00,NULL,NULL,NULL,NULL),('Lionel Messi','Arsenal',17.00,NULL,NULL,NULL,NULL),('Nick Pope','Burnley',4.50,NULL,NULL,NULL,NULL),('Teemu Pukki','Norwich City',7.50,NULL,NULL,NULL,NULL),('Timo Werner','Chelsea',10.50,NULL,NULL,NULL,NULL),('Michail Antonio','West Ham United',12.00,NULL,NULL,NULL,NULL),('Gabriel Jesus','Manchester City',12.00,NULL,NULL,NULL,NULL),('Marcos Alonso','Chelsea',9.00,NULL,NULL,NULL,NULL),('Richarlison','Everton',11.5.00,NULL,NULL,NULL,NULL),('Christian Pulisic','Chelsea',12.00,NULL,NULL,NULL,NULL);
 
-INSERT INTO `PLAYS` VALUES ('Team Bob',1,'Cristian Pulisic',0,0,1),('Team Bob',1,'Benjailmin Mendy',0,0,1),('Team Bob',1,'Donny van de Beek',0,0,0),('Team Bob',1,'Eric Dier',0,0,1),('Team Bob',1,'Erling Braut Haaland',0,0,1),('Team Bob',1,'Fred',0,0,1),('Team Bob',1,'Guilty Sigurdsson',0,0,0),('Team Bob',1,'MArcos Alonso',0,0,1),('Team Bob',1,'Jonjo Shelvey',0,1,1),('Team Bob',1,'Kepa Arrizabalaga',0,0,1),('Team Bob',1,'Marcos Antonio',0,0,1),('Team Bob',1,'Richarlison',1,0,1),('Team Bob',1,'Nick Pope',0,0,0),('Team Bob',1,'Gabriel Jesus',0,0,0),('Team Bob',1,'Timo Werner',0,0,1);
 /*!40000 ALTER TABLE `PLAYER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -645,6 +644,10 @@ CREATE TABLE `PLAYS` (
 LOCK TABLES `PLAYS` WRITE;
 /*!40000 ALTER TABLE `PLAYS` DISABLE KEYS */;
 INSERT INTO `PLAYS` VALUES ('Team 4',1,'Ali Dia',0,0,1),('Team 4',1,'Benjailmin Mendy',0,0,1),('Team 4',1,'Donny van de Beek',0,0,0),('Team 4',1,'Eric Dier',0,0,1),('Team 4',1,'Erling Braut Haaland',0,0,1),('Team 4',1,'Fred',0,0,1),('Team 4',1,'Guilty Sigurdsson',0,0,0),('Team 4',1,'Harry Maguire',0,0,1),('Team 4',1,'Jonjo Shelvey',0,1,1),('Team 4',1,'Kepa Arrizabalaga',0,0,1),('Team 4',1,'Kylian Mbappe',0,0,1),('Team 4',1,'Lionel Messi',1,0,1),('Team 4',1,'Nick Pope',0,0,0),('Team 4',1,'Teemu Pukki',0,0,0),('Team 4',1,'Timo Werner',0,0,1);
+
+INSERT INTO `PLAYS` VALUES ('Team Bob',1,'Cristian Pulisic',0,0,1),('Team Bob',1,'Benjailmin Mendy',0,0,1),('Team Bob',1,'Donny van de Beek',0,0,0),('Team Bob',1,'Eric Dier',0,0,1),('Team Bob',1,'Erling Braut Haaland',0,0,1),('Team Bob',1,'Fred',0,0,1),('Team Bob',1,'Guilty Sigurdsson',0,0,0),('Team Bob',1,'MArcos Alonso',0,0,1),('Team Bob',1,'Jonjo Shelvey',0,1,1),('Team Bob',1,'Kepa Arrizabalaga',0,0,1),('Team Bob',1,'Marcos Antonio',0,0,1),('Team Bob',1,'Richarlison',1,0,1),('Team Bob',1,'Nick Pope',0,0,0),('Team Bob',1,'Gabriel Jesus',0,0,0),('Team Bob',1,'Timo Werner',0,0,1);
+
+
 /*!40000 ALTER TABLE `PLAYS` ENABLE KEYS */;
 UNLOCK TABLES;
 
