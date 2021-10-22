@@ -541,7 +541,7 @@ CREATE TABLE `MIDFIELDER` (
 
 LOCK TABLES `MIDFIELDER` WRITE;
 /*!40000 ALTER TABLE `MIDFIELDER` DISABLE KEYS */;
-INSERT INTO `FORWARD` VALUES ('Donny can de Beek',88,2.4,0.9),('Guilty Sigurdsson',79,1.9,0.7),('Fred',92,1.1,0.2),('Jonjo Shelvey',93,0.9,0.5),('Christian Pulisic',74,2.4,1.3);
+INSERT INTO `MIDFIELDER` VALUES ('Donny can de Beek',88,2.4,0.9),('Guilty Sigurdsson',79,1.9,0.7),('Fred',92,1.1,0.2),('Jonjo Shelvey',93,0.9,0.5),('Christian Pulisic',74,2.4,1.3);
 /*!40000 ALTER TABLE `MIDFIELDER` ENABLE KEYS */;
 UNLOCK TABLES;
 
