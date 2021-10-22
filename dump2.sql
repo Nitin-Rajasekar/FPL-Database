@@ -608,7 +608,7 @@ CREATE TABLE `PLAYER` (
 
 LOCK TABLES `PLAYER` WRITE;
 /*!40000 ALTER TABLE `PLAYER` DISABLE KEYS */;
-INSERT INTO `PLAYER` VALUES ('Ali Dia','Southampton',4.50,NULL,NULL,NULL,NULL),('Benjailmin Mendy','Manchester City',8.20,NULL,NULL,NULL,NULL),('Donny van de Beek','Manchester United',5.00,NULL,NULL,NULL,NULL),('Eric Dier','Tottenham Hotspurs',7.00,NULL,NULL,NULL,NULL),('Erling Braut Haaland','Newcastle United',12.50,NULL,NULL,NULL,NULL),('Fred','Manchester United',8.00,NULL,NULL,NULL,NULL),('Guilty Sigurdsson','Everton',6.90,NULL,NULL,NULL,NULL),('Harry Maguire','Manchester United',7.50,NULL,NULL,NULL,NULL),('Jamie Vardy','Leicester City',11.30,NULL,NULL,NULL,NULL),('Jonjo Shelvey','Newcastle United',6.00,NULL,NULL,NULL,NULL),('Kepa Arrizabalaga','Chelsea',6.50,NULL,NULL,NULL,NULL),('Kylian Mbappe','Newcastle United',14.00,NULL,NULL,NULL,NULL),('Lionel Messi','Arsenal',17.00,NULL,NULL,NULL,NULL),('Nick Pope','Burnley',4.50,NULL,NULL,NULL,NULL),('Teemu Pukki','Norwich City',7.50,NULL,NULL,NULL,NULL),('Timo Werner','Chelsea',10.50,NULL,NULL,NULL,NULL);
+INSERT INTO `PLAYER` VALUES ('Ali Dia','Southampton',4.50,NULL,NULL,NULL,NULL),('Benjailmin Mendy','Manchester City',8.20,NULL,NULL,NULL,NULL),('Donny van de Beek','Manchester United',5.00,NULL,NULL,NULL,NULL),('Eric Dier','Tottenham Hotspurs',7.00,NULL,NULL,NULL,NULL),('Erling Braut Haaland','Newcastle United',12.50,NULL,NULL,NULL,NULL),('Fred','Manchester United',8.00,NULL,NULL,NULL,NULL),('Guilty Sigurdsson','Everton',6.90,NULL,NULL,NULL,NULL),('Harry Maguire','Manchester United',7.50,NULL,NULL,NULL,NULL),('Jamie Vardy','Leicester City',11.30,NULL,NULL,NULL,NULL),('Jonjo Shelvey','Newcastle United',6.00,NULL,NULL,NULL,NULL),('Kepa Arrizabalaga','Chelsea',6.50,NULL,NULL,NULL,NULL),('Kylian Mbappe','Newcastle United',14.00,NULL,NULL,NULL,NULL),('Lionel Messi','Arsenal',17.00,NULL,NULL,NULL,NULL),('Nick Pope','Burnley',4.50,NULL,NULL,NULL,NULL),('Teemu Pukki','Norwich City',7.50,NULL,NULL,NULL,NULL),('Timo Werner','Chelsea',10.50,NULL,NULL,NULL,NULL),('Michail Antonio','West Ham United',12.00,NULL,NULL,NULL,NULL),('Gabriel Jesus','Manchester City',12.00,NULL,NULL,NULL,NULL),('Marcos Alonso','Chelsea',9.00,NULL,NULL,NULL,NULL),('Richarlison','Everton',11.5.00,NULL,NULL,NULL,NULL),('Christian Pulisic','Chelsea',12.00,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `PLAYER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -735,6 +735,8 @@ CREATE TABLE `TEAM` (
 LOCK TABLES `TEAM` WRITE;
 /*!40000 ALTER TABLE `TEAM` DISABLE KEYS */;
 INSERT INTO `TEAM` VALUES ('Team 4','DNA','Monsoon','India',0,98.50,1,1.50);
+INSERT INTO `TEAM` VALUES ('Team Bob','Bob','Spring','India',0,96,1,4);
+
 /*!40000 ALTER TABLE `TEAM` ENABLE KEYS */;
 UNLOCK TABLES;
 
