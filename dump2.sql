@@ -347,7 +347,7 @@ CREATE TABLE `FORWARD` (
 
 LOCK TABLES `FORWARD` WRITE;
 /*!40000 ALTER TABLE `FORWARD` DISABLE KEYS */;
-INSERT INTO `FORWARD` VALUES ('Erling Braut Haaland',NULL,NULL,NULL),('Jamie Vardy',NULL,NULL,NULL),('Kylian Mbappe',NULL,NULL,NULL),('Teemu Pukki',NULL,NULL,NULL),('Richarlison',NULL,NULL,NULL),('Michail Antonio',NULL,NULL,NULL),('Gabriel Jesus',NULL,NULL,NULL),('Christian Pulisic',NULL,NULL,NULL);
+INSERT INTO `FORWARD` VALUES ('Erling Braut Haaland',3.4,17.1,2.1),('Jamie Vardy',2.5,25.2,0.9),('Kylian Mbappe',1.8,35.7,3.4),('Teemu Pukki',0.7,9.4,0.4),('Richarlison',1.9,28.8,2.5),('Michail Antonio',1.7,21.1,1.1),('Gabriel Jesus',2.1,34.4,3.8);
 /*!40000 ALTER TABLE `FORWARD` ENABLE KEYS */;
 UNLOCK TABLES;
 
