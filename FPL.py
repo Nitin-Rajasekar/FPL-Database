@@ -2,13 +2,14 @@ import pymysql
 import pymysql.cursors as cursors
 import subprocess as sp
 import insert as i
+import team as t
 
 # Main driver function
 def dispatch(ch):
     if ch == 1:
         i.scheduleGW(db,cur)
-    #elif ch == 2:
-
+    elif ch == 2:
+        t.manageTeam(db,cur)
     #elif ch == 3:
 
 

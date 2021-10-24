@@ -359,6 +359,7 @@ CREATE TABLE `GAMEWEEK` (
   `Week_number` int NOT NULL DEFAULT '1',
   `Highest_points` int DEFAULT NULL,
   `Average_points` int DEFAULT NULL,
+  `Year` int NOT NULL,
   `Month` int NOT NULL,
   `Day` int NOT NULL,
   `Hours` int NOT NULL,
@@ -374,7 +375,7 @@ CREATE TABLE `GAMEWEEK` (
 
 LOCK TABLES `GAMEWEEK` WRITE;
 /*!40000 ALTER TABLE `GAMEWEEK` DISABLE KEYS */;
-INSERT INTO `GAMEWEEK` VALUES (1,107,102,10,21,18,30);
+INSERT INTO `GAMEWEEK` VALUES (1,107,102,2021,10,21,18,30);
 /*!40000 ALTER TABLE `GAMEWEEK` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -650,7 +651,7 @@ CREATE TABLE `PLAYS` (
 
 LOCK TABLES `PLAYS` WRITE;
 /*!40000 ALTER TABLE `PLAYS` DISABLE KEYS */;
-INSERT INTO `PLAYS` VALUES ('Team 4',1,'Ali Dia',0,0,1),('Team 4',1,'Benjailmin Mendy',0,0,1),('Team 4',1,'Donny van de Beek',0,0,0),('Team 4',1,'Eric Dier',0,0,1),('Team 4',1,'Erling Braut Haaland',0,0,1),('Team 4',1,'Fred',0,0,1),('Team 4',1,'Guilty Sigurdsson',0,0,0),('Team 4',1,'Harry Maguire',0,0,1),('Team 4',1,'Jonjo Shelvey',0,1,1),('Team 4',1,'Kepa Arrizabalaga',0,0,1),('Team 4',1,'Kylian Mbappe',0,0,1),('Team 4',1,'Lionel Messi',1,0,1),('Team 4',1,'Nick Pope',0,0,0),('Team 4',1,'Teemu Pukki',0,0,0),('Team 4',1,'Timo Werner',0,0,1),('Team Bob',1,'Benjailmin Mendy',0,0,1),('Team Bob',1,'Cristian Pulisic',0,0,1),('Team Bob',1,'Donny van de Beek',0,0,0),('Team Bob',1,'Eric Dier',0,0,1),('Team Bob',1,'Erling Braut Haaland',0,0,1),('Team Bob',1,'Fred',0,0,1),('Team Bob',1,'Gabriel Jesus',0,0,0),('Team Bob',1,'Guilty Sigurdsson',0,0,0),('Team Bob',1,'Jonjo Shelvey',0,0,1),('Team Bob',1,'Kepa Arrizabalaga',0,0,1),('Team Bob',1,'Marcos Alonso',0,0,1),('Team Bob',1,'Michail Antonio',0,0,1),('Team Bob',1,'Nick Pope',0,0,0),('Team Bob',1,'Richarlison',1,1,1),('Team Bob',1,'Timo Werner',0,0,1);
+INSERT INTO `PLAYS` VALUES ('Team 4',1,'Ali Dia',0,0,1),('Team 4',1,'Benjailmin Mendy',0,0,1),('Team 4',1,'Donny van de Beek',0,0,0),('Team 4',1,'Eric Dier',0,0,1),('Team 4',1,'Erling Braut Haaland',0,0,1),('Team 4',1,'Fred',0,0,1),('Team 4',1,'Guilty Sigurdsson',0,0,0),('Team 4',1,'Harry Maguire',0,0,1),('Team 4',1,'Jonjo Shelvey',0,1,1),('Team 4',1,'Kepa Arrizabalaga',0,0,1),('Team 4',1,'Kylian Mbappe',0,0,1),('Team 4',1,'Lionel Messi',1,0,1),('Team 4',1,'Nick Pope',0,0,0),('Team 4',1,'Teemu Pukki',0,0,0),('Team 4',1,'Timo Werner',0,0,1),('Team Bob',1,'Benjailmin Mendy',0,0,1),('Team Bob',1,'Christian Pulisic',0,0,1),('Team Bob',1,'Donny van de Beek',0,0,0),('Team Bob',1,'Eric Dier',0,0,1),('Team Bob',1,'Erling Braut Haaland',0,0,1),('Team Bob',1,'Fred',0,0,1),('Team Bob',1,'Gabriel Jesus',0,0,0),('Team Bob',1,'Guilty Sigurdsson',0,0,0),('Team Bob',1,'Jonjo Shelvey',0,0,1),('Team Bob',1,'Kepa Arrizabalaga',0,0,1),('Team Bob',1,'Marcos Alonso',0,0,1),('Team Bob',1,'Michail Antonio',0,0,1),('Team Bob',1,'Nick Pope',0,0,0),('Team Bob',1,'Richarlison',1,1,1),('Team Bob',1,'Timo Werner',0,0,1);
 /*!40000 ALTER TABLE `PLAYS` ENABLE KEYS */;
 UNLOCK TABLES;
 

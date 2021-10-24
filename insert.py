@@ -9,14 +9,19 @@ def scheduleGW(db,cur):
 
     # Insert into GAMEWEEK table
     print('Enter the Gameweek Deadline')
-    day, month = map(str, input('Date (in DD-MM format): ').split('-'))
+    day, month, year = map(str, input('Date (in DD-MM-YYYY format): ').split('-'))
     hrs, mins = map(str, input('Time (in hh:mm format): ').split(':'))
-    query = 'INSERT INTO GAMEWEEK(Week_number,Month,Day,Hours,Minutes) VALUES (%s,%s,%s,%s,%s)' % (GW,month,day,hrs,mins)
+    query = 'INSERT INTO GAMEWEEK(Week_number,Year,Month,Day,Hours,Minutes) VALUES (%s,%s,%s,%s,%s,%s)' % (GW,year,month,day,hrs,mins)
     cur.execute(query)
     db.commit()
 
     # Get team squads from previous gameweek
     query='INSERT IGNORE INTO PLAYS SELECT Team_name,%s,Player_name,Is_captain,Is_vice_captain,Is_starting FROM PLAYS AS P WHERE P.Gameweek_number=%s;' % (GW,GW-1)
+    cur.execute(query)
+    db.commit()
+
+    # Insert into ACTIVATES table
+    query='INSERT IGNORE INTO ACTIVATES(Team_name,Week_number) SELECT Name,%s FROM TEAM;' % (GW)
     cur.execute(query)
     db.commit()
 
