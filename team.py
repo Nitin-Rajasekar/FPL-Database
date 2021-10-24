@@ -35,18 +35,19 @@ def playChip(db,cur,ActiveChip,Chips,Team,GW):
 
 def manageTeam(db,cur):
     Team = input('Enter team name: ')
-    cur.execute("SELECT * FROM TEAM WHERE Name='%s';" % (Team))
-    TeamDetails = cur.fetchone()
-    cur.execute("SELECT * FROM HAS_ACTIVE WHERE Team_name='%s';" % (Team))
-    Chips = cur.fetchall()
-    cur.execute("SELECT Chip_name FROM ACTIVATES WHERE Team_name='%s' AND Week_number=(SELECT MAX(Week_number) FROM GAMEWEEK);" % (Team))
-    ActiveChip = cur.fetchone()
-    cur.execute("SELECT * FROM PLAYS WHERE Team_name='%s' AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK);" % (Team))
-    Squad = cur.fetchall()
     
     while(1):
-        # Team details
         sp.call('clear', shell=True)
+        cur.execute("SELECT * FROM TEAM WHERE Name='%s';" % (Team))
+        TeamDetails = cur.fetchone()
+        cur.execute("SELECT * FROM HAS_ACTIVE WHERE Team_name='%s';" % (Team))
+        Chips = cur.fetchall()
+        cur.execute("SELECT Chip_name FROM ACTIVATES WHERE Team_name='%s' AND Week_number=(SELECT MAX(Week_number) FROM GAMEWEEK);" % (Team))
+        ActiveChip = cur.fetchone()
+        cur.execute("SELECT * FROM PLAYS WHERE Team_name='%s' AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK);" % (Team))
+        Squad = cur.fetchall()
+        
+        # Team details
         print('Team name:',Team,'     Manager name:',TeamDetails['Manager_First_name'],TeamDetails['Manager_Last_name'],'     Nationality:',TeamDetails['Nationality'],'     Total Points:',TeamDetails['Total Points'])
         print('Active Chip:',ActiveChip['Chip_name'],end='')
         print('     Chips left:',end=' ')
