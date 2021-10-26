@@ -1,4 +1,4 @@
-# FPL_Database
+# FPL_
 
 FPL( Fantasy Premier League) is a global game where participants assemble a virtual team of footballers and rack up points based on their real-time performances in actual games.
 
