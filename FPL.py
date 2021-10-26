@@ -4,6 +4,7 @@ import subprocess as sp
 import insert as i
 import team as t
 import update_new as u
+import misc as m
 
 # Main driver function
 def dispatch(ch):
@@ -17,6 +18,8 @@ def dispatch(ch):
         t.manageTeam(db,cur)
     elif ch == 5:
         u.takeChoice(db,cur)
+    elif ch == 6:
+        m.misc(db,cur)
 
 
 # Establish database connection
@@ -40,11 +43,12 @@ with db.cursor() as cur:
         print('3. Create a league')
         print('4. Manage a team')
         print('5. Update details')
-        print('6. Logout')
+        print('6. Miscellaneous')
+        print('7. Logout')
         ch=int(input('Enter your choice: '))
         tmp = sp.call('clear', shell=True)
 
-        if ch == 6:
+        if ch == 7:
             exit()
         else:
             dispatch(ch)
