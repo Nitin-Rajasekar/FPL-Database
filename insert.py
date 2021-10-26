@@ -44,6 +44,14 @@ def scheduleGW(db,cur):
         cur.execute(query)
         db.commit()
 
+    # Insert into PLAYS_IN
+    cur.execute("INSERT IGNORE INTO PLAYS_IN (Player_name,Home_club,Away_club,Week_number) SELECT Name,Home_club,Away_club,Week_number FROM PLAYER,FIXTURE1 WHERE Home_club=Club OR Away_club=Club;")
+    db.commit()
+
+    # Insert into ADDPOINTS1 table
+    cur.execute('INSERT IGNORE INTO ADD_POINTS1(`Team_name`, `Week_number`, `Player_name`, `Home_club`, `Away_club`) SELECT `Team_name`, `Week_number`, P1.Player_name, `Home_club`, `Away_club` FROM PLAYS AS P1, PLAYS_IN AS P2 WHERE P1.Player_name=P2.Player_name;')
+    db.commit()
+
     print('\nFinished scheduling Gameweek',GW)
     input('Press any key to continue...')
 
@@ -75,16 +83,6 @@ def createTeam(db,cur):
             print(t)
             print('Money left in bank:',Money_left,'million\n')
             n = int(input('Choose a keeper ('+str(2-i)+' left): ')) - 1
-            '''
-            if n > k:
-                if i <= n:
-                    t.del_row(n-i)
-                else:
-                    t.del_row(0)
-            else:
-                t.del_row(n)
-            k = min(k,n)
-            '''
             Squad.append(Keepers[n]['Name'])
             Squad_value += float(Keepers[n]['Market_cost'])
             Money_left -= float(Keepers[n]['Market_cost'])
@@ -102,16 +100,6 @@ def createTeam(db,cur):
             print(t)
             print('Money left in bank:',Money_left,'million\n')
             n = int(input('Choose a defender ('+str(5-i)+' left): ')) - 1
-            '''
-            if n > k:
-                if i <= n:
-                    t.del_row(n-i)
-                else:
-                    t.del_row(0)
-            else:
-                t.del_row(n)
-            k = min(k,n)
-            '''
             Squad.append(Defenders[n]['Name'])
             Squad_value += float(Defenders[n]['Market_cost'])
             Money_left -= float(Defenders[n]['Market_cost'])
@@ -129,16 +117,6 @@ def createTeam(db,cur):
             print(t)
             print('Money left in bank:',Money_left,'million\n')
             n = int(input('Choose a midfielder ('+str(5-i)+' left): ')) - 1
-            '''
-            if n > k:
-                if i <= n:
-                    t.del_row(n-i)
-                else:
-                    t.del_row(0)
-            else:
-                t.del_row(n)
-            k = min(k,n)
-            '''
             Squad.append(Midfielders[n]['Name'])
             Squad_value += float(Midfielders[n]['Market_cost'])
             Money_left -= float(Midfielders[n]['Market_cost'])
@@ -156,16 +134,6 @@ def createTeam(db,cur):
             print(t)
             print('Money left in bank:',Money_left,'million\n')
             n = int(input('Choose a forward ('+str(3-i)+' left): ')) - 1
-            '''
-            if n > k:
-                if i <= n:
-                    t.del_row(n-i)
-                else:
-                    t.del_row(0)
-            else:
-                t.del_row(n)
-            k = min(k,n)
-            '''
             Squad.append(Forwards[n]['Name'])
             Squad_value += float(Forwards[n]['Market_cost'])
             Money_left -= float(Forwards[n]['Market_cost'])
@@ -197,7 +165,33 @@ def createTeam(db,cur):
             cur.execute("INSERT INTO PLAYS VALUES('{0}',{1},'{2}',0,0,1);".format(Team,GW,Squad[i]))
         db.commit()
     
+    # Update Selection % in PLAYER table
+    cur.execute("UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);")
+    db.commit()
+
     print('Successfully created team!')
+
+    ch = input('\nWould you like join any leagues? (Y/N): ')
+    if ch == 'y' or ch == 'Y':
+        # Get all leagues
+        cur.execute('SELECT * FROM LEAGUE')
+        Leagues = cur.fetchall()
+        t = PrettyTable(['No','League name','Number of teams'])
+        for i in range(len(Leagues)):
+            t.add_row([i+1,Leagues[i]['Name'],Leagues[i]['Number_of_teams']])
+        print(t)
+        selectedLeagues = input('\nChoose league(s) to join(1-{0}, Space separated): '.format(len(Leagues))).split(' ')
+
+        # Insert into COMPETES table and update LEAGUE table
+        for i in range(len(selectedLeagues)):
+            cur.execute("INSERT INTO COMPETES(Team_name,League_code) VALUES('{0}','{1}')".format(Team,Leagues[int(selectedLeagues[i])-1]['League_code']))
+            db.commit()
+        
+            cur.execute("UPDATE LEAGUE SET Number_of_teams=Number_of_teams + 1 WHERE League_code='{0}'".format(Leagues[int(selectedLeagues[i])-1]['League_code']))
+            db.commit()
+
+        print('\nSuccessfully joined leagues!')
+
     input('Press any key to continue...')
 
 def createLeague(db,cur):
@@ -224,4 +218,27 @@ def createLeague(db,cur):
     db.commit()
 
     print('Successfully created league!')
+
+    ch = input('\nWould you like to add teams to this league? (Y/N): ')
+    if ch == 'y' or ch == 'Y':
+        # Get all teams
+        cur.execute('SELECT * FROM TEAM')
+        Teams = cur.fetchall()
+        t = PrettyTable(['No','Team name','Manager Name'])
+        for i in range(len(Teams)):
+            t.add_row([i+1,Teams[i]['Name'],Teams[i]['Manager_First_name']+' '+Teams[i]['Manager_Last_name']])
+        print(t)
+        leagueTeams = input('\nChoose team(s) to add in league(1-{0}, Space separated): '.format(len(Teams))).split(' ')
+
+        # Insert into COMPETES table
+        for i in range(len(leagueTeams)):
+            cur.execute("INSERT INTO COMPETES(Team_name,League_code) VALUES('{0}','{1}')".format(Teams[int(leagueTeams[i])-1]['Name'],Code))
+            db.commit()
+        
+        # Update LEAGUE table
+        cur.execute("UPDATE LEAGUE SET Number_of_teams={0} WHERE League_code='{1}'".format(len(leagueTeams),Code))
+        db.commit()
+
+        print('\nSuccessfully added teams to',Name+'!')
+
     input('Press any key to continue...')

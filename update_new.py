@@ -47,15 +47,8 @@ def playerPoints(db,cur):
 
 def teamPoints(db,cur):
     query="""UPDATE ADD_POINTS1 AS A1 SET Player_points=(
-    SELECT (CASE
-        WHEN Chip_name='Triple Captain' AND Is_captain=True THEN 3*P1.Player_points
-        WHEN Chip_name='Bench Boost' AND Is_starting=False THEN P1.Player_points
-        WHEN Is_captain=True THEN 2*P1.Player_points
-        WHEN Is_starting=False THEN 0
-        ELSE P1.Player_points
-    END)
-    FROM ACTIVATES AS A2, PLAYS_IN AS P1, PLAYS AS P2
-    WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number AND A1.Team_name=P2.Team_name AND A1.Week_number=P2.Gameweek_number AND A1.Player_name=P2.Player_name AND P1.Player_name=P2.Player_name);"""
+    SELECT (CASE WHEN Chip_name='Triple Captain' AND Is_captain=True THEN 3*P1.Player_points         WHEN Chip_name='Bench Boost' AND Is_starting=False THEN P1.Player_points
+    WHEN Is_captain=True THEN 2*P1.Player_points WHEN Is_starting=False THEN 0         ELSE P1.Player_points     END)     FROM ACTIVATES AS A2, PLAYS_IN AS P1, PLAYS AS P2     WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number AND A1.Team_name=P2.Team_name AND A1.Week_number=P2.Gameweek_number AND A1.Player_name=P2.Player_name AND P1.Player_name=P2.Player_name AND P1.Week_number=A1.Week_number AND A1.Home_club=P1.Home_club AND A1.Away_club=P1.Away_club);"""
     cur.execute(query)
     db.commit()
     print('')
@@ -65,12 +58,16 @@ def teamPoints(db,cur):
     WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number);"""
     cur.execute(query)
     db.commit()
-    query="""UPDATE TEAM AS T SET `Total Points`=(SELECT SUM(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Team_name=T.name);
-    UPDATE GAMEWEEK AS G SET `Highest_points`=(SELECT MAX(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);
-    UPDATE GAMEWEEK AS G SET `Average_points`=(SELECT SUM(`Gameweek Points`)/COUNT(*) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);
-    UPDATE PLAYER AS P1 SET Total_points=(SELECT SUM(Player_points) FROM PLAYS_IN AS P2 WHERE P1.Name=P2.Player_name);
-    UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);
-    """
+    cur.execute("UPDATE TEAM AS T SET `Total Points`=(SELECT SUM(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Team_name=T.name);")
+    db.commit()
+    cur.execute("UPDATE GAMEWEEK AS G SET `Highest_points`=(SELECT MAX(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);")
+    db.commit()
+    cur.execute("UPDATE GAMEWEEK AS G SET `Average_points`=(SELECT SUM(`Gameweek Points`)/COUNT(*) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);")
+    db.commit()
+    cur.execute("UPDATE PLAYER AS P1 SET Total_points=(SELECT SUM(Player_points) FROM PLAYS_IN AS P2 WHERE P1.Name=P2.Player_name);")
+    db.commit()
+    cur.execute("UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);")
+    db.commit()
     print('Team`s points have been updated')
     input('Press any key to continue...')
 
@@ -78,21 +75,24 @@ def teamPoints(db,cur):
 
 def updateLeague(db,cur):
     #updates result
-    query="""UPDATE HEAD_TO_HEAD SET `Result` = CONCAT((SELECT `Gameweek Points` FROM ACTIVATES  WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_1
-      AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))),'-',(SELECT `Gameweek Points`             FROM ACTIVATES    
-         WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_2 AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))))
+    query="""UPDATE HEAD_TO_HEAD SET `Result` = CONCAT((SELECT `Gameweek Points` FROM ACTIVATES AS A  WHERE A.Team_name=HEAD_TO_HEAD.Teamname_1
+    AND A.Week_number=(SELECT MAX(Week_number) FROM ACTIVATES)),'-',(SELECT `Gameweek Points` FROM ACTIVATES AS A   
+    WHERE A.Team_name=HEAD_TO_HEAD.Teamname_2 AND A.Week_number=(SELECT MAX(Week_number) FROM ACTIVATES)))
             """ 
     cur.execute(query)
     db.commit()
 
     # updates rank
     query="""CREATE TEMPORARY TABLE new_tbl SELECT Team_name, League_code, TEAM.`Total Points`, DENSE_RANK()
-            OVER (ORDER BY TEAM.`Total Points`) MY_RANK FROM COMPETES, TEAM WHERE COMPETES.`Team_name`=TEAM.Name;
-            UPDATE `COMPETES` SET `Rank` = (SELECT `MY_RANK` FROM new_tbl WHERE COMPETES.Team_name=new_tbl.Team_name AND COMPETES.League_code=new_tbl.league_code);
-            DROP TABLE new_tbl;
+            OVER (ORDER BY TEAM.`Total Points` DESC) MY_RANK FROM COMPETES, TEAM WHERE COMPETES.`Team_name`=TEAM.Name;
             """
-
- cur.execute(query)
+    query_2="UPDATE `COMPETES` SET `Rank` = (SELECT `MY_RANK` FROM new_tbl WHERE COMPETES.Team_name=new_tbl.Team_name AND COMPETES.League_code=new_tbl.league_code);"
+    query_3="DROP TABLE new_tbl;"
+    cur.execute(query)
+    db.commit()
+    cur.execute(query_2)
+    db.commit()
+    cur.execute(query_3)
     db.commit()
 
     print('')

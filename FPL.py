@@ -3,7 +3,7 @@ import pymysql.cursors as cursors
 import subprocess as sp
 import insert as i
 import team as t
-import update as u
+import update_new as u
 
 # Main driver function
 def dispatch(ch):

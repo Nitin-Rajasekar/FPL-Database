@@ -58,7 +58,7 @@ def makeTransfer(db,cur,Squad,TeamDetails,GW):
     else:
         print('\nTransfers left:',TeamDetails['Transfers_left'],end='     ')
     print('Money left in bank:',TeamDetails['Money_left'],'million')
-    pout = int(input('Choose player to be transferred out(1-15): ')) - 1
+    pout = int(input('Choose player to be transferred out(1-15): ')) - 1    
     if pout > 15 or pout < 1:
         input('\nInvalid choice\nPress any key to continue...')
         return
@@ -86,6 +86,14 @@ def makeTransfer(db,cur,Squad,TeamDetails,GW):
 
     # Update PLAYS table
     cur.execute("UPDATE PLAYS SET Player_name='{0}' WHERE Player_name='{1}' AND Team_name='{2}' AND Gameweek_number={3}".format(PlayerInList[pin]['Name'],Squad[pout]['Player_name'],TeamDetails['Name'],GW))
+    db.commit()
+
+    # Update ADDPOINTS1 table
+    # cur.execute("UPDATE PLAYS SET Player_name='{0}' WHERE Player_name='{1}' AND Team_name='{2}' AND Gameweek_number={3}".format(PlayerInList[pin]['Name'],Squad[pout]['Player_name'],TeamDetails['Name'],GW))
+    # db.commit()
+
+    # Update Selection % in PLAYER table
+    cur.execute("UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);")
     db.commit()
 
     # Update TEAM table
