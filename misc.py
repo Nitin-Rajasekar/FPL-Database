@@ -19,7 +19,7 @@ def sponsorDetails(db,cur):
     for row in dict:
         print(row)
         
-    time.sleep(20)
+    time.sleep(10)
 
 
 
@@ -35,7 +35,7 @@ def viewForm(db,cur):
 
     for row in dict:
         print(" Form indicator ", dict[0] )
-    time.sleep(20)
+    time.sleep(10)
         
 
 
