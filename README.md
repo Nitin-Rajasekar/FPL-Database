@@ -22,3 +22,6 @@ The list of broad primary option (which may include several sub-functionalities)
   - Update the points earned by a player
   - (Automatically) update the points earned by a virtual team
   - (Automatically) update the results and rankings of leagues
+
+7) Exit
+  Logs one out of the interface
