@@ -3,6 +3,7 @@ import pymysql.cursors as cursors
 import subprocess as sp
 import insert as i
 import team as t
+import update as u
 
 # Main driver function
 def dispatch(ch):
@@ -14,7 +15,8 @@ def dispatch(ch):
         i.createLeague(db,cur)
     elif ch == 4:
         t.manageTeam(db,cur)
-    #elif ch == 5:
+    elif ch == 5:
+        u.takeChoice(db,cur)
 
 
 # Establish database connection
