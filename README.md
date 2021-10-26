@@ -11,13 +11,14 @@ The list of broad primary option (which may include several sub-functionalities)
     
  3) Create a new league
  Multiple users can join a single league, where they can compete against each other based on the total points they have gained. 
- One enters the league name and chooses the type and mode of the league from on the options given (a head-to-head league for instance has different functionalities here) 
+ One enters the league name and chooses the type and mode of the league from on the options given (a head-to-head league for instance has different functionalities here) .
+ After creating a league, one has the option to add teams into it .
   
 5) Update details
   Update details allows users to (extensively) update a wide range of values and tuples often involving relations between the 28 tuples.
   One can
   - Update the results of completed fixtures
-  - Updated a player's performance-based statistics
-  - Updated the points earned by a player
+  - Update a player's performance-based statistics
+  - Update the points earned by a player
   - (Automatically) update the points earned by a virtual team
   - (Automatically) update the results and rankings of leagues
