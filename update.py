@@ -93,6 +93,10 @@ def updateLeague(db,cur):
     query_3="DROP TABLE new_tbl;"
     cur.execute(query)
     db.commit()
+    cur.execute(query_2)
+    db.commit()
+    cur.execute(query_3)
+    db.commit()
 
     print('')
     print('League details have been updated')
