@@ -733,7 +733,7 @@ CREATE TABLE `TEAM` (
   PRIMARY KEY (`Name`),
   UNIQUE KEY `Manager_name` (`Manager_First_name`,`Manager_Last_name`),
   CONSTRAINT `TEAM_chk_1` CHECK ((`Transfers_left` <= 2)),
-  CONSTRAINT `TEAM_chk_2` CHECK ((`Squad Value` > 0))
+  CONSTRAINT `TEAM_chk_2` CHECK ((`Squad Value` >= 0))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
