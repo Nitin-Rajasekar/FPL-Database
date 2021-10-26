@@ -87,7 +87,7 @@ def updateLeague(db,cur):
 
     # updates rank
     query="""CREATE TEMPORARY TABLE new_tbl SELECT Team_name, League_code, TEAM.`Total Points`, DENSE_RANK()
-            OVER (ORDER BY TEAM.`Total Points`) MY_RANK FROM COMPETES, TEAM WHERE COMPETES.`Team_name`=TEAM.Name;
+            OVER (ORDER BY TEAM.`Total Points` DESC) MY_RANK FROM COMPETES, TEAM WHERE COMPETES.`Team_name`=TEAM.Name;
             """
     query_2="UPDATE `COMPETES` SET `Rank` = (SELECT `MY_RANK` FROM new_tbl WHERE COMPETES.Team_name=new_tbl.Team_name AND COMPETES.League_code=new_tbl.league_code);"
     query_3="DROP TABLE new_tbl;"
@@ -109,7 +109,7 @@ def updateLeague(db,cur):
 
 
 
-
+ 
 
 
 def takeChoice(db,cur):
