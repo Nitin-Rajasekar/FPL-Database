@@ -77,10 +77,24 @@ def teamPoints(db,cur):
 
 
 def updateLeague(db,cur):
-    query="""UPDATE HEAD_TO_HEAD SET `Result` = (SELECT `Gameweek Points` FROM ACTIVATES 
-    WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_1 AND ACTIVATES.Week_number=SELECT(MAX(ACTIVATES.Week_number)));""" 
+    #updates result
+    query="""UPDATE HEAD_TO_HEAD SET `Result` = CONCAT((SELECT `Gameweek Points` FROM ACTIVATES  WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_1
+      AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))),'-',(SELECT `Gameweek Points`             FROM ACTIVATES    
+         WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_2 AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))))
+            """ 
     cur.execute(query)
     db.commit()
+
+    # updates rank
+    query="""CREATE TEMPORARY TABLE new_tbl SELECT Team_name, League_code, TEAM.`Total Points`, DENSE_RANK()
+            OVER (ORDER BY TEAM.`Total Points`) MY_RANK FROM COMPETES, TEAM WHERE COMPETES.`Team_name`=TEAM.Name;
+            UPDATE `COMPETES` SET `Rank` = (SELECT `MY_RANK` FROM new_tbl WHERE COMPETES.Team_name=new_tbl.Team_name AND COMPETES.League_code=new_tbl.league_code);
+            DROP TABLE new_tbl;
+            """
+
+ cur.execute(query)
+    db.commit()
+
     print('')
     print('League details have been updated')
     input('Press any key to continue...')
