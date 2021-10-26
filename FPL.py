@@ -9,8 +9,12 @@ def dispatch(ch):
     if ch == 1:
         i.scheduleGW(db,cur)
     elif ch == 2:
+        i.createTeam(db,cur)
+    elif ch == 3:
+        i.createLeague(db,cur)
+    elif ch == 4:
         t.manageTeam(db,cur)
-    #elif ch == 3:
+    #elif ch == 5:
 
 
 # Establish database connection
@@ -30,13 +34,15 @@ with db.cursor() as cur:
     while(1):
         tmp = sp.call('clear', shell=True)
         print('1. Schedule upcoming gameweek')
-        print('2. Manage a team')
-        print('3. Update details')
-        print('4. Logout')
+        print('2. Create a team')
+        print('3. Create a league')
+        print('4. Manage a team')
+        print('5. Update details')
+        print('6. Logout')
         ch=int(input('Enter your choice: '))
         tmp = sp.call('clear', shell=True)
 
-        if ch == 4:
+        if ch == 6:
             exit()
         else:
             dispatch(ch)

@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS `FIXTURE1`;
 CREATE TABLE `FIXTURE1` (
   `Home_club` varchar(50) NOT NULL,
   `Away_club` varchar(50) NOT NULL,
-  `Result` varchar(100) NOT NULL,
+  `Result` varchar(100),
   `Year` int(2) NOT NULL,
   `Month` int(2) NOT NULL,
   `Day` int(2) NOT NULL,
