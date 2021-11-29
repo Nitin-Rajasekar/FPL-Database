@@ -165,6 +165,18 @@ def createTeam(db,cur):
             cur.execute("INSERT INTO PLAYS VALUES('{0}',{1},'{2}',0,0,1);".format(Team,GW,Squad[i]))
         db.commit()
     
+    # Insert into HAS_ACTIVE table
+    cur.execute("INSERT INTO HAS_ACTIVE VALUES('{0}','Triple Captain'),('{0}','Bench Boost'),('{0}','Freehit'),('{0}','Wildcard')".format(Team,GW))
+    db.commit()
+    
+    # Insert into ACTIVATES table
+    cur.execute("INSERT INTO ACTIVATES(Team_name,Week_number) VALUES('{0}',{1})".format(Team,GW))
+    db.commit()
+    
+    # Insert into ADD_POINTS1 table
+    cur.execute('INSERT IGNORE INTO ADD_POINTS1(`Team_name`, `Week_number`, `Player_name`, `Home_club`, `Away_club`) SELECT `Team_name`, `Week_number`, P1.Player_name, `Home_club`, `Away_club` FROM PLAYS AS P1, PLAYS_IN AS P2 WHERE P1.Player_name=P2.Player_name;')
+    db.commit()
+
     # Update Selection % in PLAYER table
     cur.execute("UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);")
     db.commit()

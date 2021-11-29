@@ -1,5 +1,4 @@
 def sponsorDetails(db,cur):
-    print("OH")
     query='SELECT * FROM CATEGORY'
     cur.execute(query)
     db.commit()
@@ -55,7 +54,6 @@ def misc(db,cur):
     
     choice=int(input('Enter your choicee: '))
     if choice == 1:
-        print("OH")
         sponsorDetails(db,cur)
     elif choice == 2:
         viewForm(db,cur)

@@ -2,9 +2,9 @@ import subprocess as sp
 
 def updateScores(db,cur):
     # Get the fixture result
-    home_club = str(input('Enter the home club of the concerned fixture: '))
-    away_club = str(input('Enter the away club of the concerned fixture: '))
-    home, away = map(str, input('Fixture result (in home-team`s goals-away team`s goals format): ').split('-'))
+    home_club = str(input('Enter the home club: '))
+    away_club = str(input('Enter the away club: '))
+    home, away = map(str, input('Score (in home-teams goals-away teams goals format): ').split('-'))
     query='UPDATE `FIXTURE1` SET `Result` = "%s-%s" WHERE `HOME_CLUB`= "%s" AND `AWAY_CLUB`= "%s";' % (home, away,home_club,away_club)
     cur.execute(query)
     db.commit()
@@ -15,19 +15,21 @@ def updateScores(db,cur):
 
 def playerStats(db,cur):
     # Get the fixture result
-    player_name = input('Enter the name of the player whose statistic is to be updated: ')
-    stat_name = str(input("""Enter the name of the statistic to alter(Shots_on_target, Touches_inside_box, Dribbles, Passing Accuracy, Chances Created, Through_balls, Clearances, Tackles, Interceptions, Saves, Clean_sheets, Penalties Saved): """))
-    new_stat = str(input('Enter the updated value of the statistic: '))
+    player_name = input('Enter the name of the player: ')
+    stat_name = str(input('Enter the name of the statistic to alter: '))
+    new_stat = str(input('Enter the name of the new value of the statistic: '))
     if stat_name == "Shots_on_target" or stat_name == "Touches_inside_box" or stat_name == "Dribbles":
-        query='UPDATE `FORWARD` SET `%s` = %s WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name)
+        cur.execute('UPDATE `FORWARD` SET `%s` = %s WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name))
+        db.commit()
     elif stat_name == "Passing Accuracy" or stat_name == "Chances Created" or stat_name == "Through_balls":
-        query='UPDATE `MIDFIELDER` SET `%s` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name)
+        cur.execute('UPDATE `MIDFIELDER` SET `%s` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name))
+        db.commit()
     elif stat_name == "Clearances" or stat_name == "Tackles" or stat_name == "Interceptions":
-        query='UPDATE `DEFENDER` SET `"%s"` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name)
-    elif stat_name == "Save" or stat_name == "Clean_sheets" or stat_name == "Penalties Saved":
-        query='UPDATE `KEEPER` SET `"%s"` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name)
-    cur.execute(query)
-    db.commit()
+        cur.execute('UPDATE `DEFENDER` SET `%s` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name))
+        db.commit()
+    elif stat_name == "Saves" or stat_name == "Clean_sheets" or stat_name == "Penalties Saved":
+        cur.execute('UPDATE `KEEPER` SET `%s` = "%s" WHERE `Player_name`= "%s";' % (stat_name,new_stat,player_name))
+        db.commit()
     print('')
     print('Player`s statistic has been updated')
     input('Press any key to continue...')
@@ -41,21 +43,14 @@ def playerPoints(db,cur):
     cur.execute(query)
     db.commit()
     print('')
-    print('Player`s statistic has been updated')
+    print('Player`s points has been updated')
     input('Press any key to continue...')
 
 
 def teamPoints(db,cur):
     query="""UPDATE ADD_POINTS1 AS A1 SET Player_points=(
-    SELECT (CASE
-        WHEN Chip_name='Triple Captain' AND Is_captain=True THEN 3*P1.Player_points
-        WHEN Chip_name='Bench Boost' AND Is_starting=False THEN P1.Player_points
-        WHEN Is_captain=True THEN 2*P1.Player_points
-        WHEN Is_starting=False THEN 0
-        ELSE P1.Player_points
-    END)
-    FROM ACTIVATES AS A2, PLAYS_IN AS P1, PLAYS AS P2
-    WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number AND A1.Team_name=P2.Team_name AND A1.Week_number=P2.Gameweek_number AND A1.Player_name=P2.Player_name AND P1.Player_name=P2.Player_name);"""
+    SELECT (CASE WHEN Chip_name='Triple Captain' AND Is_captain=True THEN 3*P1.Player_points         WHEN Chip_name='Bench Boost' AND Is_starting=False THEN P1.Player_points
+    WHEN Is_captain=True THEN 2*P1.Player_points WHEN Is_starting=False THEN 0         ELSE P1.Player_points     END)     FROM ACTIVATES AS A2, PLAYS_IN AS P1, PLAYS AS P2     WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number AND A1.Team_name=P2.Team_name AND A1.Week_number=P2.Gameweek_number AND A1.Player_name=P2.Player_name AND P1.Player_name=P2.Player_name AND P1.Week_number=A1.Week_number AND A1.Home_club=P1.Home_club AND A1.Away_club=P1.Away_club);"""
     cur.execute(query)
     db.commit()
     print('')
@@ -65,12 +60,16 @@ def teamPoints(db,cur):
     WHERE A1.Team_name=A2.Team_name AND A1.Week_number=A2.Week_number);"""
     cur.execute(query)
     db.commit()
-    query="""UPDATE TEAM AS T SET `Total Points`=(SELECT SUM(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Team_name=T.name);
-    UPDATE GAMEWEEK AS G SET `Highest_points`=(SELECT MAX(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);
-    UPDATE GAMEWEEK AS G SET `Average_points`=(SELECT SUM(`Gameweek Points`)/COUNT(*) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);
-    UPDATE PLAYER AS P1 SET Total_points=(SELECT SUM(Player_points) FROM PLAYS_IN AS P2 WHERE P1.Name=P2.Player_name);
-    UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);
-    """
+    cur.execute("UPDATE TEAM AS T SET `Total Points`=(SELECT SUM(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Team_name=T.name);")
+    db.commit()
+    cur.execute("UPDATE GAMEWEEK AS G SET `Highest_points`=(SELECT MAX(`Gameweek Points`) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);")
+    db.commit()
+    cur.execute("UPDATE GAMEWEEK AS G SET `Average_points`=(SELECT SUM(`Gameweek Points`)/COUNT(*) FROM ACTIVATES AS A WHERE A.Week_number=G.Week_number);")
+    db.commit()
+    cur.execute("UPDATE PLAYER AS P1 SET Total_points=(SELECT SUM(Player_points) FROM PLAYS_IN AS P2 WHERE P1.Name=P2.Player_name);")
+    db.commit()
+    cur.execute("UPDATE PLAYER AS P1 SET `Selection %`=(SELECT 100*COUNT(*) FROM PLAYS AS P2 WHERE P1.Name=P2.Player_name AND Gameweek_number=(SELECT MAX(Week_number) FROM GAMEWEEK) ) / (SELECT COUNT(*) FROM TEAM);")
+    db.commit()
     print('Team`s points have been updated')
     input('Press any key to continue...')
 
@@ -78,9 +77,9 @@ def teamPoints(db,cur):
 
 def updateLeague(db,cur):
     #updates result
-    query="""UPDATE HEAD_TO_HEAD SET `Result` = CONCAT((SELECT `Gameweek Points` FROM ACTIVATES  WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_1
-      AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))),'-',(SELECT `Gameweek Points`             FROM ACTIVATES    
-         WHERE ACTIVATES.Team_name=HEAD_TO_HEAD.Teamname_2 AND ACTIVATES.Week_number=(SELECT(MAX(ACTIVATES.Week_number)))))
+    query="""UPDATE HEAD_TO_HEAD SET `Result` = CONCAT((SELECT `Gameweek Points` FROM ACTIVATES AS A  WHERE A.Team_name=HEAD_TO_HEAD.Teamname_1
+    AND A.Week_number=(SELECT MAX(Week_number) FROM ACTIVATES)),'-',(SELECT `Gameweek Points` FROM ACTIVATES AS A   
+    WHERE A.Team_name=HEAD_TO_HEAD.Teamname_2 AND A.Week_number=(SELECT MAX(Week_number) FROM ACTIVATES)))
             """ 
     cur.execute(query)
     db.commit()
@@ -103,13 +102,12 @@ def updateLeague(db,cur):
     input('Press any key to continue...')
 
 
-#UPDATE `COMPETES` SET `Rank` = (SELECT `MY_RANK` FROM new_tbl WHERE COMPETES.Team_name=new_tbl.Team_name AND COMPETES.League_code=new_tbl.league_code);
-
-#            DROP TABLE new_tbl;
 
 
+   
 
- 
+
+
 
 
 def takeChoice(db,cur):

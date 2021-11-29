@@ -3,8 +3,9 @@ import pymysql.cursors as cursors
 import subprocess as sp
 import insert as i
 import team as t
-import update_new as u
+import update as u
 import misc as m
+from getpass import getpass as gt
 
 # Main driver function
 def dispatch(ch):
@@ -25,8 +26,8 @@ def dispatch(ch):
 # Establish database connection
 print('Welcome to Fantasy Premier League!!! Enter user credentials to login')
 Username=input('Username: ')
-Password=input('Password: ')
-db = pymysql.connect(host='localhost', port=3306, user='FPLadmin', password='FPL@admin@123', db='FPL', cursorclass=cursors.DictCursor)
+Password=gt('Password: ')
+db = pymysql.connect(host='localhost', port=3306, user=Username, password=Password, db='FPL', cursorclass=cursors.DictCursor)
 if(db.open):
     print('Connected to FPL database')
     input('Press any key to continue...')
