@@ -36,7 +36,10 @@ This option primarily covers two special retrievals and one deletion. Retrievals
 ## Exit
   Logs one out of the interface
 
-Also the link to a demonstration video has been added below. 
 
-
-https://drive.google.com/file/d/1MVQ6KszpYWjC2RFAV15FtrHDeanmJkNJ/view?usp=sharing
+## Execution:
+**The entry file to begin execution is FPL.py**
+If one would like to view the raw MySQL tables (via the Linux Terminal)
+  - sudo service mysql start
+  - sudo mysql -u root -p
+  and enter the credentials of the MySQL localhost.
